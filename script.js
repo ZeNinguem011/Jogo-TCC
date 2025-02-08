@@ -602,13 +602,13 @@ function exibirResultado() {
   }
 
   // Envia o score para o servidor e busca o ranking
-  fetch('https://abcdef1234.ngrok.io/submit', {
+  fetch('https://2b1d-143-208-70-19.ngrok-free.app/submit', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ score: acertos })
 })
 .then(res => res.json())
-.then(() => fetch('https://abcdef1234.ngrok.io/ranking?score=' + acertos))
+.then(() => fetch('https://2b1d-143-208-70-19.ngrok-free.app/ranking?score=' + acertos))
 .then(res => res.json())
 .then(data => mostrarRanking(data.percentile))
 .catch(err => console.error(err));
