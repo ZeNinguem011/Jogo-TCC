@@ -602,16 +602,17 @@ function exibirResultado() {
   }
 
   // Envia o score para o servidor e busca o ranking
-  fetch('http://localhost:3000/submit', {
+  fetch('https://abcdef1234.ngrok.io/submit', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ score: acertos })
-  })
-  .then(res => res.json())
-  .then(() => fetch('http://localhost:3000/ranking?score=' + acertos))
-  .then(res => res.json())
-  .then(data => mostrarRanking(data.percentile))
-  .catch(err => console.error(err));
+})
+.then(res => res.json())
+.then(() => fetch('https://abcdef1234.ngrok.io/ranking?score=' + acertos))
+.then(res => res.json())
+.then(data => mostrarRanking(data.percentile))
+.catch(err => console.error(err));
+  
 }
 
 function mostrarRanking(percentile) {
