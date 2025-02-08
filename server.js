@@ -4,12 +4,15 @@ const cors = require('cors');
 const fs = require('fs');
 
 const app = express();
-app.use(cors());
+
+// Configure o CORS para permitir requisições do seu domínio
+app.use(cors({
+  origin: 'https://jogo-tcc-two.vercel.app'
+}));
+
 app.use(bodyParser.json());
 
 const DATA_FILE = 'scores.json';
-
-// Cria o arquivo scores.json se não existir
 if (!fs.existsSync(DATA_FILE)) {
   fs.writeFileSync(DATA_FILE, JSON.stringify([]));
 }
@@ -31,16 +34,20 @@ app.post('/submit', (req, res) => {
 });
 
 app.get('/ranking', (req, res) => {
-  const currentScore = parseFloat(req.query.score);
-  if (isNaN(currentScore)) {
-    return res.status(400).json({ error: 'Score query param is required' });
+  try {
+    const currentScore = parseFloat(req.query.score);
+    if (isNaN(currentScore)) {
+      return res.status(400).json({ error: 'Score query param is required' });
+    }
+    const data = JSON.parse(fs.readFileSync(DATA_FILE));
+    const total = data.length;
+    const beaten = data.filter(s => s < currentScore).length;
+    const percentile = total ? Math.round((beaten / total) * 100) : 0;
+    res.json({ percentile });
+  } catch (error) {
+    console.error('Erro no /ranking:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
-  const data = JSON.parse(fs.readFileSync(DATA_FILE));
-  const total = data.length;
-  const beaten = data.filter(s => s < currentScore).length;
-  // Percentual de jogadores superados:
-  const percentile = total ? Math.round((beaten / total) * 100) : 0;
-  res.json({ percentile });
 });
 
 const PORT = process.env.PORT || 3000;
