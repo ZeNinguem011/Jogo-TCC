@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Jogo de Tomada de Decisão Dinâmico</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div id="company-bar-container" class="hidden">
+      <div id="company-bar"></div>
+    </div>
+    <div class="container" id="intro">
+      <h2>Jogo de Tomada de Decisão</h2>
+      <p>
+        Você é um gestor industrial recém contratado de uma empresa que precisa se adequar a um mercado competitivo e inovador. Suas decisões determinarão o sucesso ou fracasso da organização!
+      </p>
+      <button id="btnIniciar">Começar</button>
+    </div>
+    <div class="container hidden" id="quiz">
+      <p id="cenario"></p>
+      <h3 id="pergunta"></h3>
+      <p id="progresso"></p>
+      <div id="opcoes"></div>
+    </div>
+    <div class="container hidden" id="explicacao">
+      <h3>Explicação Detalhada</h3>
+      <p id="explicacaoTexto"></p>
+      <!-- O botão exibirá "Resultado" na última pergunta -->
+      <button id="btnContinuar">Próxima Pergunta</button>
+    </div>
+    <div class="container hidden" id="resultado">
+      <h2>Resultado</h2>
+      <p id="mensagem"></p>
+      <p id="pontuacao"></p>
+      <div id="ranking"></div>
+      <button id="btnReiniciar">Jogar Novamente</button>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>

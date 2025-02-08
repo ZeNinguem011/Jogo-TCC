@@ -1,0 +1,104 @@
+:root {
+  --primary-color: #2C3E50;
+  --secondary-color: #2980B9;
+  --background-gradient: linear-gradient(135deg, #2980B9, #2C3E50);
+  --light-color: #ECF0F1;
+  --dark-color: #2C3E50;
+  --success-color: #27AE60;
+  --error-color: #E74C3C;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  background: var(--background-gradient);
+  color: var(--light-color);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.container {
+  width: 100%;
+  max-width: 600px;
+  background: var(--light-color);
+  border-radius: 10px;
+  padding: 30px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  margin: 20px 0;
+  color: var(--dark-color);
+}
+
+.hidden {
+  display: none;
+}
+
+h2, h3 {
+  color: var(--primary-color);
+  margin-bottom: 20px;
+}
+
+p {
+  margin-bottom: 20px;
+  line-height: 1.6;
+}
+
+button {
+  background: var(--primary-color);
+  border: none;
+  border-radius: 5px;
+  padding: 12px 25px;
+  font-size: 16px;
+  color: var(--light-color);
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+  margin: 8px;
+  width: 100%;
+}
+
+button:hover {
+  background: var(--secondary-color);
+  transform: translateY(-2px);
+}
+
+.correct {
+  background: var(--success-color) !important;
+}
+
+.incorrect {
+  background: var(--error-color) !important;
+}
+
+#company-bar-container {
+  width: 100%;
+  max-width: 600px;
+  height: 20px;
+  background: #ddd;
+  border-radius: 10px;
+  overflow: hidden;
+  margin: 20px auto 0;
+}
+
+#company-bar {
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(90deg, #27AE60, #2980B9);
+  transition: width 0.5s ease-out;
+}
+
+/* Estilo para o ranking (círculo) */
+#ranking {
+  margin-top: 20px;
+  text-align: center;
+}
+#ranking svg {
+  width: 120px;
+  height: 120px;
+}
