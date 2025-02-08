@@ -18,19 +18,21 @@ if (!fs.existsSync(DATA_FILE)) {
 }
 
 app.post('/submit', (req, res) => {
-  try {
-    const { score } = req.body;
-    if (typeof score !== 'number') {
-      return res.status(400).json({ error: 'Score must be a number' });
+    try {
+        let score = req.body.score;
+        if (!score) {
+            return res.status(400).json({ error: "Pontuação inválida" });
+        }
+
+        let scores = JSON.parse(fs.readFileSync('scores.json'));
+        scores.push(score);
+        fs.writeFileSync('scores.json', JSON.stringify(scores));
+
+        res.json({ message: "Pontuação salva com sucesso!" });
+    } catch (error) {
+        console.error("Erro no servidor:", error);
+        res.status(500).json({ error: "Erro interno no servidor" });
     }
-    const data = JSON.parse(fs.readFileSync(DATA_FILE));
-    data.push(score);
-    fs.writeFileSync(DATA_FILE, JSON.stringify(data));
-    res.json({ message: 'Score submitted' });
-  } catch (error) {
-    console.error('Erro no /submit:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
 });
 
 app.get('/ranking', (req, res) => {
