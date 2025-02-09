@@ -474,18 +474,30 @@ const perguntas = [
     dificuldade: "dificil"
   }
 ];
-
+// Variáveis Globais
 let indicesUsados = new Set();
 let perguntasRespondidas = 0,
     acertos = 0,
     companyState = 50,
     TOTAL_PERGUNTAS = 10,
-    perguntaAtual;
+    perguntaAtual,
+    personagemSelecionado = null,
+    nomeJogador = "";
 
+// Função para Embaralhar um Array
+function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+}
+
+// Atualiza a Barra de Progresso da Empresa
 function updateCompanyBar() {
   document.getElementById("company-bar").style.width = companyState + "%";
 }
 
+// Seleciona uma Pergunta com Base no companyState
 function selecionarPergunta() {
   let filtradas;
   if (Math.round(companyState) === 50) filtradas = perguntas;
@@ -500,22 +512,20 @@ function selecionarPergunta() {
   return escolha;
 }
 
+// Inicia o Jogo (Mostra a Tela de Seleção de Personagem)
 function iniciarJogo() {
   document.getElementById("intro").classList.add("hidden");
-  document.getElementById("resultado").classList.add("hidden");
-  document.getElementById("quiz").classList.remove("hidden");
-  document.getElementById("company-bar-container").classList.remove("hidden");
-  perguntasRespondidas = 0; acertos = 0; companyState = 50;
-  indicesUsados.clear();
-  updateCompanyBar();
-  carregarPergunta();
+  document.getElementById("personagem").classList.remove("hidden");
+  document.getElementById("company-bar-container").classList.add("hidden");
 }
 
+// Atualiza o Progresso do Jogo
 function updateProgress() {
   document.getElementById("progresso").textContent =
     "Pergunta " + (perguntasRespondidas + 1) + " de " + TOTAL_PERGUNTAS;
 }
 
+// Carrega a Próxima Pergunta
 function carregarPergunta() {
   if (perguntasRespondidas >= TOTAL_PERGUNTAS) { exibirResultado(); return; }
   perguntaAtual = selecionarPergunta();
@@ -543,6 +553,7 @@ function carregarPergunta() {
   });
 }
 
+// Verifica a Resposta do Jogador
 function verificarResposta(i, btn) {
   Array.from(document.querySelectorAll("#opcoes button")).forEach(b => b.disabled = true);
   const correta = i === perguntaAtual.correta;
@@ -571,6 +582,7 @@ function verificarResposta(i, btn) {
   }, 1000);
 }
 
+// Mostra a Explicação da Resposta
 function mostrarExplicacao(texto) {
   document.getElementById("quiz").classList.add("hidden");
   document.getElementById("explicacao").classList.remove("hidden");
@@ -579,42 +591,43 @@ function mostrarExplicacao(texto) {
     ? "Resultado" : "Próxima Pergunta";
 }
 
+// Avança para a Próxima Pergunta ou Resultado
 function proximaPergunta() {
   document.getElementById("explicacao").classList.add("hidden");
   document.getElementById("quiz").classList.remove("hidden");
   carregarPergunta();
 }
 
+// Exibe o Resultado Final
 function exibirResultado() {
   document.getElementById("quiz").classList.add("hidden");
   document.getElementById("resultado").classList.remove("hidden");
-  document.getElementById("mensagem").textContent = acertos >= 7
-    ? "Parabéns! Sua gestão melhorou a empresa!"
-    : "Sua empresa enfrentou dificuldades. Tente novamente!";
+  document.getElementById("mensagem").innerHTML = `
+    ${nomeJogador}, ${acertos >= 7 ?
+    "Parabéns! Sua gestão melhorou a empresa!" :
+    "Sua empresa enfrentou dificuldades. Tente novamente!"}
+  `;
   document.getElementById("pontuacao").textContent =
     "Você acertou " + acertos + " de " + TOTAL_PERGUNTAS + " perguntas.";
 
   // Remove ranking antigo, se existir, para evitar duplicação
   const rankingAntigo = document.getElementById("ranking");
-  if (rankingAntigo) {
-    rankingAntigo.remove();
-    
-  }
+  if (rankingAntigo) rankingAntigo.remove();
 
   // Envia o score para o servidor e busca o ranking
-  fetch('https://d9f6-143-208-70-19.ngrok-free.app/submit', {
+  fetch('http://localhost:3000/submit', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ score: acertos })
-})
-.then(res => res.json())
-.then(() => fetch('https://d9f6-143-208-70-19.ngrok-free.app/ranking?score=' + acertos))
-.then(res => res.json())
-.then(data => mostrarRanking(data.percentile))
-.catch(err => console.error(err));
-  
+  })
+  .then(res => res.json())
+  .then(() => fetch('http://localhost:3000/ranking?score=' + acertos))
+  .then(res => res.json())
+  .then(data => mostrarRanking(data.percentile))
+  .catch(err => console.error(err));
 }
 
+// Mostra o Ranking do Jogador
 function mostrarRanking(percentile) {
   const rankingDiv = document.createElement("div");
   rankingDiv.id = "ranking";
@@ -631,11 +644,48 @@ function mostrarRanking(percentile) {
   document.getElementById("resultado").appendChild(rankingDiv);
 }
 
+// Reinicia o Jogo
 function reiniciarJogo() {
   document.getElementById("resultado").classList.add("hidden");
   document.getElementById("intro").classList.remove("hidden");
 }
 
+// Event Listeners para Novas Telas (Personagem e Nome)
+document.querySelectorAll('.personagem-card').forEach(card => {
+  card.addEventListener('click', () => {
+    document.querySelectorAll('.personagem-card').forEach(c => c.classList.remove('selected'));
+    card.classList.add('selected');
+    personagemSelecionado = card.querySelector('p').textContent;
+  });
+});
+
+document.getElementById('btnConfirmarPersonagem').addEventListener('click', () => {
+  if (personagemSelecionado) {
+    document.getElementById("personagem").classList.add("hidden");
+    document.getElementById("nome").classList.remove("hidden");
+  } else {
+    alert("Selecione um personagem!");
+  }
+});
+
+document.getElementById('btnConfirmarNome').addEventListener('click', () => {
+  nomeJogador = document.getElementById('inputNome').value.trim();
+  if (nomeJogador) {
+    document.getElementById("nome").classList.add("hidden");
+    document.getElementById("quiz").classList.remove("hidden");
+    document.getElementById("company-bar-container").classList.remove("hidden");
+    perguntasRespondidas = 0;
+    acertos = 0;
+    companyState = 50;
+    indicesUsados.clear();
+    updateCompanyBar();
+    carregarPergunta();
+  } else {
+    alert("Digite seu nome!");
+  }
+});
+
+// Event Listeners Originais
 document.getElementById("btnIniciar").addEventListener("click", iniciarJogo);
 document.getElementById("btnReiniciar").addEventListener("click", reiniciarJogo);
 document.getElementById("btnContinuar").addEventListener("click", proximaPergunta);
