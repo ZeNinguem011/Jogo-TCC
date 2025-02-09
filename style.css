@@ -34,6 +34,7 @@ body {
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
   margin: 20px 0;
   color: var(--dark-color);
+  position: relative;
 }
 
 .hidden {
@@ -121,6 +122,40 @@ button:hover {
   transition: width 0.5s ease-out;
 }
 
+/* Estilos do Tabuleiro */
+.board-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  flex-wrap: wrap;
+  gap: 5px;
+  position: absolute;
+  top: -60px;
+  left: -60px;
+  right: -60px;
+  bottom: -60px;
+  z-index: -1;
+}
+
+.board-cell {
+  width: 50px;
+  height: 50px;
+  border: 2px solid black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+}
+
+.correct-cell {
+  background-color: var(--success-color) !important;
+}
+
+.incorrect-cell {
+  background-color: var(--error-color) !important;
+}
+
+/* Estilo para o ranking (círculo) */
 #ranking {
   margin-top: 20px;
   text-align: center;
