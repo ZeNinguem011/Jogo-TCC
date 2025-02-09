@@ -4,7 +4,9 @@ function shuffleArray(array) {
     [array[i], array[j]] = [array[j], array[i]];
   }
 }
+
 import { perguntas } from './perguntas.js';
+
 // Variáveis Globais
 let indicesUsados = new Set();
 let perguntasRespondidas = 0,
