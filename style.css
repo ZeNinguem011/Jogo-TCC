@@ -26,14 +26,15 @@ body {
 }
 
 .container {
-  width: 100%;
+  width: 90%;
   max-width: 600px;
   background: var(--light-color);
   border-radius: 10px;
   padding: 30px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
   margin: 20px 0;
   color: var(--dark-color);
+  text-align: center; /* Centraliza o conteúdo do container */
 }
 
 .hidden {
@@ -43,25 +44,28 @@ body {
 h2, h3 {
   color: var(--primary-color);
   margin-bottom: 20px;
+  font-size: 1.8rem;
 }
 
 p {
   margin-bottom: 20px;
   line-height: 1.6;
+  font-size: 1rem;
 }
 
+/* Botões maiores e centralizados */
 button {
   background: var(--primary-color);
   border: none;
   border-radius: 5px;
-  padding: 12px 25px;
-  font-size: 16px;
+  padding: 16px 30px;  /* Botões maiores */
+  font-size: 18px;     /* Fonte maior */
   color: var(--light-color);
   cursor: pointer;
   transition: background 0.3s, transform 0.2s;
-  margin: 8px auto;
+  margin: 12px auto;   /* Centralizado */
   display: block;
-  width: 100%;
+  max-width: 90%;
 }
 
 button:hover {
@@ -78,7 +82,7 @@ button:hover {
 }
 
 #company-bar-container {
-  width: 100%;
+  width: 90%;
   max-width: 600px;
   height: 20px;
   background: #ddd;
@@ -102,4 +106,21 @@ button:hover {
 #ranking svg {
   width: 120px;
   height: 120px;
+}
+
+/* Media query para telas menores (celulares) */
+@media (max-width: 480px) {
+  h2, h3 {
+    font-size: 1.6rem;
+  }
+  p {
+    font-size: 0.9rem;
+  }
+  button {
+    padding: 18px 35px;
+    font-size: 20px;
+  }
+  .container {
+    padding: 20px;
+  }
 }
