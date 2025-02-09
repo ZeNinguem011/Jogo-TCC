@@ -5,7 +5,7 @@ function shuffleArray(array) {
   }
 }
 
-import { perguntas } from './perguntas.js';
+import { perguntas } from 'perguntas.js';
 
 // Variáveis Globais
 let indicesUsados = new Set();
