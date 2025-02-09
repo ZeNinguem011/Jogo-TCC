@@ -59,9 +59,9 @@ button {
   color: var(--light-color);
   cursor: pointer;
   transition: background 0.3s, transform 0.2s;
-  margin: 8px auto;    /* margem automática para centralizar horizontalmente */
-  display: block;      /* torna o botão um elemento de bloco */
-  max-width: 300px;    /* largura máxima opcional */
+  margin: 8px auto;
+  display: block;
+  width: 100%;
 }
 
 button:hover {
