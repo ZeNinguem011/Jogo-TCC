@@ -34,6 +34,7 @@ body {
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
   margin: 20px 0;
   color: var(--dark-color);
+  position: relative;
 }
 
 .hidden {
@@ -80,7 +81,7 @@ body {
   font-size: 16px;
 }
 
-/* Demais Estilos (Existentes) */
+/* Centralizar os botões */
 button {
   background: var(--primary-color);
   border: none;
@@ -90,8 +91,10 @@ button {
   color: var(--light-color);
   cursor: pointer;
   transition: background 0.3s, transform 0.2s;
-  margin: 8px;
+  margin: 8px auto; /* Ajuste para centralização */
   width: 100%;
+  display: block;
+  text-align: center;
 }
 
 button:hover {
@@ -119,8 +122,51 @@ button:hover {
   transition: width 0.5s ease-out;
 }
 
+/* Estilos do Tabuleiro */
+.board-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  flex-wrap: wrap;
+  gap: 5px;
+  position: absolute;
+  top: -60px;
+  left: -60px;
+  right: -60px;
+  bottom: -60px;
+  z-index: -1;
+}
+
+.board-cell {
+  width: 50px;
+  height: 50px;
+  border: 2px solid black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+}
+
+.correct-cell {
+  background-color: var(--success-color) !important;
+}
+
+.incorrect-cell {
+  background-color: var(--error-color) !important;
+}
+
+/* Estilo para o ranking (círculo) */
 #ranking {
   margin-top: 20px;
   text-align: center;
 }
 #ranking svg { width: 120px; height: 120px; }
+
+/* Adicionar espaçamento entre as frases na área das perguntas */
+#cenario,
+#pergunta,
+#progresso {
+  margin-bottom: 15px; /* Adiciona um espaço entre os elementos */
+  text-align: center; /* Centraliza o texto */
+  line-height: 1.6; /* Melhora a legibilidade */
+}
