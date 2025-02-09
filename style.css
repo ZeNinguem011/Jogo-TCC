@@ -80,7 +80,7 @@ body {
   font-size: 16px;
 }
 
-/* Demais Estilos (Existentes) */
+/* Centralizar os botões */
 button {
   background: var(--primary-color);
   border: none;
@@ -90,8 +90,10 @@ button {
   color: var(--light-color);
   cursor: pointer;
   transition: background 0.3s, transform 0.2s;
-  margin: 8px;
+  margin: 8px auto; /* Ajuste para centralização */
   width: 100%;
+  display: block;
+  text-align: center;
 }
 
 button:hover {
@@ -124,3 +126,12 @@ button:hover {
   text-align: center;
 }
 #ranking svg { width: 120px; height: 120px; }
+
+/* Adicionar espaçamento entre as frases na área das perguntas */
+#cenario,
+#pergunta,
+#progresso {
+  margin-bottom: 15px; /* Adiciona um espaço entre os elementos */
+  text-align: center; /* Centraliza o texto */
+  line-height: 1.6; /* Melhora a legibilidade */
+}
