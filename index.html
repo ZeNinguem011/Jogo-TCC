@@ -14,6 +14,8 @@
     <div id="company-bar-container" class="hidden">
       <div id="company-bar"></div>
     </div>
+    
+    <!-- Tela de Introdução -->
     <div class="container" id="intro">
       <h2>Jogo de Tomada de Decisão</h2>
       <p>
@@ -21,18 +23,48 @@
       </p>
       <button id="btnIniciar">Começar</button>
     </div>
+
+    <!-- Tela de Seleção de Personagem -->
+    <div class="container hidden" id="personagem">
+      <h2>Escolha seu Personagem</h2>
+      <div class="personagem-grid">
+        <div class="personagem-card">
+          <img src="img/engenheira.png" alt="Engenheira" class="personagem-img">
+          <p>Engenheira Industrial</p>
+        </div>
+        <div class="personagem-card">
+          <img src="img/gestor.png" alt="Gestor" class="personagem-img">
+          <p>Gestor de Operações</p>
+        </div>
+        <div class="personagem-card">
+          <img src="img/consultor.png" alt="Consultor" class="personagem-img">
+          <p>Consultor Lean</p>
+        </div>
+      </div>
+      <button id="btnConfirmarPersonagem">Confirmar</button>
+    </div>
+
+    <!-- Tela de Inserção de Nome -->
+    <div class="container hidden" id="nome">
+      <h2>Como devemos te chamar?</h2>
+      <input type="text" id="inputNome" placeholder="Digite seu nome" maxlength="20">
+      <button id="btnConfirmarNome">Começar Jogo</button>
+    </div>
+
+    <!-- Telas Existentes (Quiz, Explicação, Resultado) -->
     <div class="container hidden" id="quiz">
       <p id="cenario"></p>
       <h3 id="pergunta"></h3>
       <p id="progresso"></p>
       <div id="opcoes"></div>
     </div>
+
     <div class="container hidden" id="explicacao">
       <h3>Explicação Detalhada</h3>
       <p id="explicacaoTexto"></p>
-      <!-- O botão exibirá "Resultado" na última pergunta -->
       <button id="btnContinuar">Próxima Pergunta</button>
     </div>
+
     <div class="container hidden" id="resultado">
       <h2>Resultado</h2>
       <p id="mensagem"></p>
@@ -40,6 +72,7 @@
       <div id="ranking"></div>
       <button id="btnReiniciar">Jogar Novamente</button>
     </div>
+
     <script src="script.js"></script>
   </body>
 </html>
