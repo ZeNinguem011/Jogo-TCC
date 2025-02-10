@@ -4,7 +4,7 @@
 :root {
   --primary-color: #2C3E50;
   --secondary-color: #2980B9;
-  --background-gradient: linear-gradient(135deg, #2980B9, #2C3E50);
+  --background-gradient: linear-gradient(135deg, #000000, #111827);
   --light-color: #ECF0F1;
   --dark-color: #2C3E50;
   --success-color: #27AE60;
@@ -18,7 +18,7 @@
   :root {
     --primary-color: #0A0A0A;
     --secondary-color: #111827;
-    --background-gradient: linear-gradient(135deg, #000000, #111827);
+    --background-gradient: linear-gradient(135deg, #2980B9, #2C3E50);
     --light-color: #D1D5DB;
     --dark-color: #F9FAFB;
     --card-bg: #121212;
