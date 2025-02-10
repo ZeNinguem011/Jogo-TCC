@@ -1,3 +1,12 @@
+// Variáveis Globais
+let indicesUsados = new Set();
+let perguntasRespondidas = 0,
+    acertos = 0,
+    companyState = 50,
+    TOTAL_PERGUNTAS = 10,
+    perguntaAtual,
+    personagemSelecionado = null,
+    nomeJogador = "";
 
 const perguntas = [
   // QUESTÕES FÁCEIS (14 questões)
@@ -468,16 +477,6 @@ const perguntas = [
     detalhesIncorreto: "Estabilidade sem mudanças contraria a melhoria contínua.",
     dificuldade: "dificil"
 ];
-
-// Variáveis Globais
-let indicesUsados = new Set();
-let perguntasRespondidas = 0,
-    acertos = 0,
-    companyState = 50,
-    TOTAL_PERGUNTAS = 10,
-    perguntaAtual,
-    personagemSelecionado = null,
-    nomeJogador = "";
 
 // Função para Embaralhar um Array
 function shuffleArray(array) {
