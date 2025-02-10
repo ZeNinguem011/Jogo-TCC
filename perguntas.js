@@ -1,5 +1,4 @@
-// perguntas.js
-const perguntas = [
+export const perguntas = [
   // QUESTÕES FÁCEIS (14 questões)
   {
     pergunta: "Qual o principal objetivo da gestão de estoque em uma empresa?",
@@ -468,5 +467,3 @@ const perguntas = [
     detalhesIncorreto: "Estabilidade sem mudanças contraria a melhoria contínua.",
     dificuldade: "dificil"
 ];
-
-export { perguntas };
