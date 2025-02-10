@@ -8,7 +8,7 @@ let perguntasRespondidas = 0,
     personagemSelecionado = null,
     nomeJogador = "";
 
-import { perguntas } from "./perguntas.js";
+import { perguntas } from "/perguntas.js";
 
 // Função para Embaralhar um Array
 function shuffleArray(array) {
