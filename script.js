@@ -6,11 +6,38 @@ let perguntasRespondidas = 0,
     TOTAL_PERGUNTAS = 10,
     perguntaAtual,
     personagemSelecionado = null,
-    nomeJogador = "";
+    nomeJogador = "",
+    erros = 0,
+    MAX_ERROS = 4,
+    progresso = 0;
 
-import { perguntas } from "/perguntas.js";
+import { perguntas } from "./perguntas.js";
 
-// Função para Embaralhar um Array
+// Sistema de Tema
+function setTheme(theme) {
+  document.documentElement.setAttribute("data-theme", theme);
+  localStorage.setItem("theme", theme);
+}
+
+function getSystemTheme() {
+  return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+}
+
+function loadTheme() {
+  const savedTheme = localStorage.getItem("theme") || getSystemTheme();
+  setTheme(savedTheme);
+}
+
+document.getElementById("toggle-theme").addEventListener("click", function () {
+  const currentTheme = document.documentElement.getAttribute("data-theme");
+  const newTheme = currentTheme === "dark" ? "light" : "dark";
+  setTheme(newTheme);
+  this.textContent = newTheme === "dark" ? "🌞" : "🌙";
+});
+
+window.addEventListener("DOMContentLoaded", loadTheme);
+
+// Funções do Jogo
 function shuffleArray(array) {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -18,12 +45,10 @@ function shuffleArray(array) {
   }
 }
 
-// Atualiza a Barra de Progresso da Empresa
 function updateCompanyBar() {
   document.getElementById("company-bar").style.width = companyState + "%";
 }
 
-// Seleciona uma Pergunta com Base no companyState
 function selecionarPergunta() {
   let filtradas;
   if (Math.round(companyState) === 50) filtradas = perguntas;
@@ -38,20 +63,23 @@ function selecionarPergunta() {
   return escolha;
 }
 
-// Inicia o Jogo (Mostra a Tela de Seleção de Personagem)
+// Fluxo do Jogo
 function iniciarJogo() {
+    const tabuleiro = document.getElementById("tabuleiro");
+  if (tabuleiro) {
+    tabuleiro.style.display = "grid" ;
+  }
   document.getElementById("intro").classList.add("hidden");
   document.getElementById("personagem").classList.remove("hidden");
   document.getElementById("company-bar-container").classList.add("hidden");
+  resetarTabuleiro();
 }
 
-// Atualiza o Progresso do Jogo
 function updateProgress() {
   document.getElementById("progresso").textContent =
     "Pergunta " + (perguntasRespondidas + 1) + " de " + TOTAL_PERGUNTAS;
 }
 
-// Carrega a Próxima Pergunta
 function carregarPergunta() {
   if (perguntasRespondidas >= TOTAL_PERGUNTAS) { exibirResultado(); return; }
   perguntaAtual = selecionarPergunta();
@@ -79,27 +107,39 @@ function carregarPergunta() {
   });
 }
 
-// Verifica a Resposta do Jogador
 function verificarResposta(i, btn) {
   Array.from(document.querySelectorAll("#opcoes button")).forEach(b => b.disabled = true);
   const correta = i === perguntaAtual.correta;
+  const casas = document.querySelectorAll("#tabuleiro div");
+  
   if (correta) {
     acertos++;
     btn.classList.add("correct");
+    casas[progresso].style.background = "green";
     let base = (perguntaAtual.dificuldade === "dificil") ? 15 :
                (perguntaAtual.dificuldade === "medio") ? 10 : 5;
     let fator = ((100 - companyState) / 100) * 0.5 + 0.5;
     companyState += base * fator;
   } else {
     btn.classList.add("incorrect");
+    casas[progresso].style.background = "red";
     let base = (perguntaAtual.dificuldade === "facil") ? 10 :
                (perguntaAtual.dificuldade === "medio") ? 5 : 2;
     let fator = (companyState / 100) * 0.5 + 0.5;
     companyState -= base * fator;
+    erros++;
   }
+  
+  progresso++;
   companyState = Math.min(Math.max(companyState, 0), 100);
   updateCompanyBar();
   perguntasRespondidas++;
+
+  if (erros >= MAX_ERROS) {
+    exibirDerrota();
+    return;
+  }
+
   setTimeout(() => {
     let textoExp = perguntaAtual.explicacoes ?
                    perguntaAtual.explicacoes[i] :
@@ -108,7 +148,7 @@ function verificarResposta(i, btn) {
   }, 1000);
 }
 
-// Mostra a Explicação da Resposta
+// Telas e Feedback
 function mostrarExplicacao(texto) {
   document.getElementById("quiz").classList.add("hidden");
   document.getElementById("explicacao").classList.remove("hidden");
@@ -117,14 +157,12 @@ function mostrarExplicacao(texto) {
     ? "Resultado" : "Próxima Pergunta";
 }
 
-// Avança para a Próxima Pergunta ou Resultado
 function proximaPergunta() {
   document.getElementById("explicacao").classList.add("hidden");
   document.getElementById("quiz").classList.remove("hidden");
   carregarPergunta();
 }
 
-// Exibe o Resultado Final
 function exibirResultado() {
   document.getElementById("quiz").classList.add("hidden");
   document.getElementById("resultado").classList.remove("hidden");
@@ -136,11 +174,9 @@ function exibirResultado() {
   document.getElementById("pontuacao").textContent =
     "Você acertou " + acertos + " de " + TOTAL_PERGUNTAS + " perguntas.";
 
-  // Remove ranking antigo, se existir, para evitar duplicação
   const rankingAntigo = document.getElementById("ranking");
   if (rankingAntigo) rankingAntigo.remove();
 
-  // Envia o score para o servidor e busca o ranking
   fetch('http://localhost:3000/submit', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -153,7 +189,14 @@ function exibirResultado() {
   .catch(err => console.error(err));
 }
 
-// Mostra o Ranking do Jogador
+function exibirDerrota() {
+  document.getElementById("quiz").classList.add("hidden");
+  document.getElementById("explicacao").classList.add("hidden");
+  document.getElementById("resultado").classList.remove("hidden");
+  document.getElementById("mensagem").textContent = "Você errou 4 perguntas e perdeu o jogo. Tente novamente!";
+  document.getElementById("pontuacao").textContent = "Você acertou " + acertos + " perguntas antes de perder.";
+}
+
 function mostrarRanking(percentile) {
   const rankingDiv = document.createElement("div");
   rankingDiv.id = "ranking";
@@ -170,13 +213,37 @@ function mostrarRanking(percentile) {
   document.getElementById("resultado").appendChild(rankingDiv);
 }
 
-// Reinicia o Jogo
-function reiniciarJogo() {
-  document.getElementById("resultado").classList.add("hidden");
-  document.getElementById("intro").classList.remove("hidden");
+// Tabuleiro
+function criarTabuleiro() {
+  const tabuleiro = document.createElement("div");
+  tabuleiro.id = "tabuleiro";
+  tabuleiro.style.display = "grid";
+  tabuleiro.style.gridTemplateColumns = "repeat(5, 50px)";
+  tabuleiro.style.gridGap = "10px";
+  tabuleiro.style.marginTop = "20px";
+  
+  for (let i = 1; i <= 10; i++) {
+    const casa = document.createElement("div");
+    casa.textContent = i;
+    casa.style.width = "50px";
+    casa.style.height = "50px";
+    casa.style.display = "flex";
+    casa.style.alignItems = "center";
+    casa.style.justifyContent = "center";
+    casa.style.border = "2px solid black";
+    casa.style.background = "lightgray";
+    tabuleiro.appendChild(casa);
+  }
+  document.body.appendChild(tabuleiro);
 }
 
-// Event Listeners para Novas Telas (Personagem e Nome)
+function resetarTabuleiro() {
+  document.querySelectorAll("#tabuleiro div").forEach(casa => casa.style.background = "lightgray");
+}
+
+// Event Listeners
+document.addEventListener("DOMContentLoaded", criarTabuleiro);
+
 document.querySelectorAll('.personagem-card').forEach(card => {
   card.addEventListener('click', () => {
     document.querySelectorAll('.personagem-card').forEach(c => c.classList.remove('selected'));
@@ -211,7 +278,18 @@ document.getElementById('btnConfirmarNome').addEventListener('click', () => {
   }
 });
 
-// Event Listeners Originais
 document.getElementById("btnIniciar").addEventListener("click", iniciarJogo);
 document.getElementById("btnReiniciar").addEventListener("click", reiniciarJogo);
 document.getElementById("btnContinuar").addEventListener("click", proximaPergunta);
+
+function reiniciarJogo() {
+  document.getElementById("resultado").classList.add("hidden");
+  document.getElementById("intro").classList.remove("hidden");
+  perguntasRespondidas = 0;
+  acertos = 0;
+  companyState = 50;
+  erros = 0;
+  progresso = 0;
+  indicesUsados.clear();
+  resetarTabuleiro();
+}
