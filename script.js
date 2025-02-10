@@ -32,7 +32,7 @@ document.getElementById("toggle-theme").addEventListener("click", function () {
   const currentTheme = document.documentElement.getAttribute("data-theme");
   const newTheme = currentTheme === "dark" ? "light" : "dark";
   setTheme(newTheme);
-  this.textContent = newTheme === "dark" ? "🌞" : "🌙";
+  this.textContent = newTheme === "dark" ? "🌙" : "🌞";
 });
 
 window.addEventListener("DOMContentLoaded", loadTheme);
