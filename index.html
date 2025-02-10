@@ -11,20 +11,20 @@
     />
   </head>
   <body>
+    <!-- Barra de progresso da empresa -->
     <div id="company-bar-container" class="hidden">
       <div id="company-bar"></div>
     </div>
     
-    <!-- Tela de Introdução -->
+    <!-- Tela inicial com introdução ao jogo -->
     <div class="container" id="intro">
+      <button id="toggle-theme" class="theme-toggle">🌙</button>
       <h2>Jogo de Tomada de Decisão</h2>
-      <p>
-        Você é um gestor industrial recém contratado de uma empresa que precisa se adequar a um mercado competitivo e inovador. Suas decisões determinarão o sucesso ou fracasso da organização!
-      </p>
+      <p>Você é um gestor industrial recém contratado de uma empresa que precisa se adequar a um mercado competitivo e inovador. Suas decisões determinarão o sucesso ou fracasso da organização!</p>
       <button id="btnIniciar">Começar</button>
     </div>
 
-    <!-- Tela de Seleção de Personagem -->
+    <!-- Tela de seleção de personagem -->
     <div class="container hidden" id="personagem">
       <h2>Escolha seu Personagem</h2>
       <div class="personagem-grid">
@@ -44,14 +44,14 @@
       <button id="btnConfirmarPersonagem">Confirmar</button>
     </div>
 
-    <!-- Tela de Inserção de Nome -->
+    <!-- Tela para inserção do nome do jogador -->
     <div class="container hidden" id="nome">
       <h2>Como devemos te chamar?</h2>
       <input type="text" id="inputNome" placeholder="Digite seu nome" maxlength="20">
       <button id="btnConfirmarNome">Começar Jogo</button>
     </div>
 
-    <!-- Telas Existentes (Quiz, Explicação, Resultado) -->
+    <!-- Tela principal do quiz com perguntas e opções -->
     <div class="container hidden" id="quiz">
       <p id="cenario"></p>
       <h3 id="pergunta"></h3>
@@ -59,12 +59,14 @@
       <div id="opcoes"></div>
     </div>
 
+    <!-- Tela de explicação com feedback das respostas -->
     <div class="container hidden" id="explicacao">
       <h3>Explicação Detalhada</h3>
       <p id="explicacaoTexto"></p>
       <button id="btnContinuar">Próxima Pergunta</button>
     </div>
 
+    <!-- Tela final com resultados e opção de reiniciar -->
     <div class="container hidden" id="resultado">
       <h2>Resultado</h2>
       <p id="mensagem"></p>
@@ -73,6 +75,7 @@
       <button id="btnReiniciar">Jogar Novamente</button>
     </div>
 
+    <!-- Script principal do jogo -->
     <script type="module" src="script.js"></script>
   </body>
 </html>
