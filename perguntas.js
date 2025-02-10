@@ -466,4 +466,5 @@ export const perguntas = [
     detalhesCorreto: "A análise preditiva identifica problemas antes que ocorram, apoiando o Kaizen.",
     detalhesIncorreto: "Estabilidade sem mudanças contraria a melhoria contínua.",
     dificuldade: "dificil"
+   {
 ];
